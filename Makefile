@@ -5,7 +5,7 @@ TAG_VERSION=$(if $(shell git describe --abbrev=0 --tags),$(shell git describe --
 APP_VERSION=$(shell cat VERSION)
 VERSION=$(if $(TAG_VERSION),$(TAG_VERSION),$(APP_VERSION))
 LDFLAGS += -s -w
-LDFLAGS += -X dm_exporter/global.Version_=${VERSION}
+LDFLAGS += -X dm_exporter/global.Version=${VERSION}
 
 .PHONY: help build clean init debug docker-build demo
 
@@ -23,6 +23,8 @@ build: clean
 	@echo "build completed"
 docker-build:
 	@docker build -t ${APP_NAME}:${VERSION} .
+docker-buildx:
+	@docker buildx build --push --platform linux/amd64,linux/arm64 -t harbor.jkstack.com/infra/${APP_NAME}:${VERSION} .
 build_all: clean init _build_linux
 	@echo "build completed"
 build_linux: clean init _build_linux_amd64 _build_linux_arm64
