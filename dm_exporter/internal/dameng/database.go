@@ -3,8 +3,10 @@ package dameng
 import (
 	"database/sql"
 
-	_ "dm"
+	// _ "dm"
 	"dm_exporter/global"
+
+	_ "github.com/team-ide/go-driver/driver/dm"
 
 	"github.com/prometheus/common/log"
 )
